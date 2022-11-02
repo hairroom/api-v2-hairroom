@@ -15,10 +15,24 @@ const getOrders = async (req, res) => {
     }
 }
 
-const getOrder = async (req, res) => {
+const getOrderById = async (req, res) => {
     const orderById = await orderModel.findById(req.params.id);
     if(!orderById) return res.status(204).json();
     return res.json(orderById);
+}
+
+const getOrderByIdentification = async (req, res) => {
+    try {
+        const { numberIdentification, typeIdentification } = req.body
+        const orderByIdentification = await orderModel.findOne({numberIdentification, typeIdentification});
+
+        if(!orderByIdentification) return res.status(204).json({message: "User not found!"});
+        
+        return res.json(orderByIdentification)
+    } catch (error) {
+        console.error(error.message)
+        return res.sendStatus(500);
+    }
 }
 
 const deleteOrder = async (req, res) => {
@@ -35,7 +49,8 @@ const deleteOrders = async (req, res) => {
 module.exports = {
     createOrder,
     getOrders,
-    getOrder,
+    getOrderById,
     deleteOrder,
-    deleteOrders
+    deleteOrders,
+    getOrderByIdentification
 }

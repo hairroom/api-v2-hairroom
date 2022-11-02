@@ -1,5 +1,5 @@
 const express = require('express');
-const { createOrder, getOrders, getOrder, deleteOrder, deleteOrders } = require('../services/order.service');
+const { createOrder, getOrders, getOrder, deleteOrder, deleteOrders, getOrderByIdentification } = require('../services/order.service');
 const { checkAdminRole } = require('../middlewares/auth.handler');
 const passport = require('passport');
 
@@ -13,11 +13,7 @@ router.get('/getOrders',
     getOrders
 );
 
-router.get('/getOrder/:id', 
-    passport.authenticate('jwt', { session: false }),
-    checkAdminRole,
-    getOrder
-);
+router.post('/filterOrderByIdentification', getOrderByIdentification)
 
 router.delete('/deleteOrder/:id', 
     passport.authenticate('jwt', { session: false }),
